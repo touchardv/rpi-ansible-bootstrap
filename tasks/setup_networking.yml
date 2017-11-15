@@ -1,0 +1,28 @@
+---
+- name: get the hostname
+  shell: raspi-config nonint get_hostname
+  register: current_hostname
+  changed_when: false
+  failed_when: current_hostname.stderr != ""
+
+- name: set the hostname
+  shell: raspi-config nonint do_hostname {{ network_hostname }}
+  when: current_hostname != network_hostname
+  notify:
+  - reboot
+  - wait for reboot to finish
+
+- name: assign a fixed IP address
+  blockinfile:
+    path: /etc/dhcpcd.conf
+    state: present
+    insertafter: EOF
+    block: |
+      interface {{ network_interface }}
+      static ip_address={{ network_ip_address }}
+      static routers={{ network_router_ip_address }}
+      static domain_name_servers={{ network_dns_ip_address }}
+
+- name: set the new Ansible ssh address
+  set_fact:
+    ansible_host: "{{ network_ip_address }}"

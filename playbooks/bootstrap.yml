@@ -1,0 +1,27 @@
+---
+- hosts: all
+  remote_user : pi
+  become: true
+
+  gather_facts: no
+
+  vars_files:
+  - ../vars/global_variables.yml
+
+  tasks:
+  - import_tasks: ../tasks/setup_user.yml
+
+  - import_tasks: ../tasks/upgrade_raspi-config.yml
+
+  - import_tasks: ../tasks/upgrade_packages.yml
+
+  - import_tasks: ../tasks/setup_localization.yml
+
+  - import_tasks: ../tasks/setup_networking.yml
+
+  - import_tasks: ../tasks/set_gpu_memory.yml
+
+  - import_tasks: ../tasks/expand_root_fs.yml
+
+  handlers:
+  - import_tasks: ../handlers/reboot.yml

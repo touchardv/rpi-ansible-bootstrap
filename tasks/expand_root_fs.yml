@@ -1,0 +1,13 @@
+---
+- name: check if the root filesystem can be expanded
+  shell: raspi-config nonint get_can_expand
+  register: can_expand
+  changed_when: false
+  failed_when: can_expand.stderr != ""
+
+- name: expand the root filesystem
+  command: raspi-config nonint do_expand_rootfs
+  when: can_expand.stdout != "0"
+  notify:
+  - reboot
+  - wait for reboot to finish

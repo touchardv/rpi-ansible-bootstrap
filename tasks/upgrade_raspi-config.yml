@@ -1,0 +1,6 @@
+---
+- name: upgrade raspi-config
+  apt:
+    name: raspi-config
+    state: latest
+    update_cache: yes

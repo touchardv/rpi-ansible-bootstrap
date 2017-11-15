@@ -1,0 +1,10 @@
+---
+- name: reboot
+  command: shutdown -r now 'Ansible reboot'
+  async: 0
+  poll: 0
+  ignore_errors: true
+
+- name: wait for reboot to finish
+  local_action: wait_for host={{ ansible_host }} state=started port=22 delay=60 timeout=120
+  become: false

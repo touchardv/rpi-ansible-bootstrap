@@ -1,0 +1,2 @@
+templates/wpa_supplicant.conf
+vars/global_variables.yml

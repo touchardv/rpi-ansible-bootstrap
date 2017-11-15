@@ -1,0 +1,29 @@
+---
+- name: configure option values in /etc/locale.gen file.
+  lineinfile:
+    dest: /etc/locale.gen
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    insertafter: EOF
+    state: present
+  with_items: "{{ locale_options }}"
+
+- name: generate locale
+  command: locale-gen {{ locale }}
+
+- name: set locale
+  command: update-locale LC_ALL={{ locale }} LANG={{ locale }}
+
+- name: get the current timezone
+  shell: cat /etc/timezone
+  register: current_timezone
+  changed_when: false
+  failed_when: current_timezone.stderr != ""
+
+- name: set the timezone
+  timezone:
+    name: "{{ timezone }}"
+  when: current_timezone.stdout != timezone
+
+- name: set /etc/default/keyboard
+  template: src=../templates/keyboard dest=/etc/default/keyboard

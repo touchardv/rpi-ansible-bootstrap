@@ -1,0 +1,25 @@
+---
+keyboard: "pc104"
+keyboard_layout: "us"
+
+locale: "en_US.UTF-8"
+locale_options:
+  # Disable Default (GB) Locale
+  - regexp: "^#?en_GB.UTF-8 UTF-8"
+    line: "# en_GB.UTF-8 UTF-8"
+  # Enable US Locale
+  - regexp: "^#?en_US.UTF-8 UTF-8"
+    line: "en_US.UTF-8 UTF-8"
+
+network_dns_ip_address: 10.0.0.1
+network_hostname: mypi
+network_interface: wlan0
+network_ip_address: 10.0.0.10
+network_router_ip_address: 10.0.0.1
+
+ssh_key_file: ~/.ssh/id_rsa.pub
+timezone: Europe/Brussels
+
+# encrypted password
+# python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_crypt.using(rounds=5000).hash(getpass.getpass())"
+new_password: $6$PFu9PHM.Loc/sJ3V$JFwcnC5VKyfxZ5RxyAyjO3adM/9DZJvqO/RpT/frkvvoSW1SObVcS61zjjagh5i9Oh.Pkv3ARLdJwri/UdD2S/
