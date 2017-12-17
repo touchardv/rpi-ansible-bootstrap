@@ -17,11 +17,11 @@
 
   - import_tasks: ../tasks/setup_localization.yml
 
-  - import_tasks: ../tasks/setup_networking.yml
-
   - import_tasks: ../tasks/set_gpu_memory.yml
 
   - import_tasks: ../tasks/expand_root_fs.yml
+
+  - import_tasks: ../tasks/setup_networking.yml
 
   handlers:
   - import_tasks: ../handlers/reboot.yml
