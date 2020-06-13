@@ -23,3 +23,13 @@
       static ip_address={{ network_ip_address }}
       static routers={{ network_router_ip_address }}
       static domain_name_servers={{ network_dns_ip_address }}
+
+- name: get wifi country
+  shell: raspi-config nonint get_wifi_country
+  register: current_wifi_country
+  changed_when: false
+  failed_when: current_wifi_country.stderr != ""
+
+- name: set wifi country
+  shell: raspi-config nonint do_wifi_country {{ wifi_country }}
+  when: current_wifi_country.stdout != wifi_country
