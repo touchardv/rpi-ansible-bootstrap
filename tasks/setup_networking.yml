@@ -7,7 +7,7 @@
 
 - name: set the hostname
   shell: raspi-config nonint do_hostname {{ network_hostname }}
-  when: current_hostname != network_hostname
+  when: current_hostname.stdout != network_hostname
   notify:
   - reboot
   - set the new host ssh address
