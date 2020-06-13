@@ -10,6 +10,7 @@
   when: current_hostname != network_hostname
   notify:
   - reboot
+  - set the new host ssh address
   - wait for reboot to finish
 
 - name: assign a fixed IP address
@@ -22,7 +23,3 @@
       static ip_address={{ network_ip_address }}
       static routers={{ network_router_ip_address }}
       static domain_name_servers={{ network_dns_ip_address }}
-
-- name: set the new Ansible ssh address
-  set_fact:
-    ansible_host: "{{ network_ip_address }}"
