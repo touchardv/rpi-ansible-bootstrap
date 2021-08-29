@@ -7,12 +7,15 @@
     insertafter: EOF
     state: present
   with_items: "{{ locale_options }}"
+  register: local_configuration
 
 - name: generate locale
   command: locale-gen {{ locale }}
+  when: local_configuration.changed
 
 - name: set locale
   command: update-locale LC_ALL={{ locale }} LANG={{ locale }}
+  when: local_configuration.changed
 
 - name: get the current timezone
   shell: cat /etc/timezone
