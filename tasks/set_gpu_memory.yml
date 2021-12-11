@@ -1,14 +1,13 @@
 ---
-# TODO fix me - current raspi-config function returns nothing :-()
-# - name: check the current memory split
-#   shell: raspi-config nonint get_current_memory_split
-#   register: memory_split
-#   changed_when: false
-#   failed_when: memory_split.stderr != ""
+- name: check the current memory split
+  shell: raspi-config nonint get_config_var gpu_mem /boot/config.txt
+  register: memory_split
+  changed_when: false
+  failed_when: memory_split.stderr != ""
 
 - name: apply the memory split
-  command: raspi-config nonint do_memory_split 32
-  # when: memory_split.stdout != "32"
+  command: raspi-config nonint do_memory_split 256
+  when: memory_split.stdout != "256"
   notify:
   - reboot
   - wait for reboot to finish
