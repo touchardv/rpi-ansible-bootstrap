@@ -32,4 +32,4 @@
 
 - name: set wifi country
   shell: raspi-config nonint do_wifi_country {{ wifi_country }}
-  when: current_wifi_country.rc == 0 and  current_wifi_country.stdout != wifi_country
+  when: current_wifi_country.rc in [0, 1] and  current_wifi_country.stdout != wifi_country
