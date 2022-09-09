@@ -1,11 +1,25 @@
+IMAGE := touchardv/ansible
+TAG := latest
+UNAME_S := $(shell uname -s)
+
 build:
-	docker build -t touchardv/ansible .
+	podman build -t $(IMAGE):$(TAG) .
 
 clean:
-	docker rmi -f touchardv/ansible
+	podman image rm $(IMAGE):$(TAG)
+
+setup:
+	rm -rf dependencies/*
+	ansible-galaxy collection install -r requirements.yml --collections-path ./dependencies/collections
+	ansible-galaxy role install -r requirements.yml --roles-path ./dependencies/roles
 
 shell:
-	docker run -it --rm \
-	-v $(HOME)/.ssh:/home/ansible/.ssh \
-	-v `pwd`:/home/ansible/src touchardv/ansible \
-	bash
+	podman run -it --rm \
+	-h ansible \
+	-u root \
+	-e HISTFILE=/root/src/.bash_history \
+	-v $(HOME)/.ssh:/root/.ssh \
+	-v `pwd`:/root/src \
+	$(IMAGE):$(TAG)
+
+.DEFAULT_GOAL := build
